@@ -4,45 +4,49 @@ buildscript {
     }
 
     dependencies {
-        classpath 'com.avast.gradle:gradle-publish:0.4.2'
-        classpath 'com.avast.gradle:gradle-release:0.4.2'
-        classpath 'com.avast.gradle:gradle-scala:0.4.2'
-        classpath 'com.avast.gradle:gradle-protobuf:0.4.2'
-        classpath 'com.google.protobuf:protobuf-gradle-plugin:0.7.0'
-        classpath 'com.github.ben-manes:gradle-versions-plugin:0.11.1'
+        classpath 'com.avast.gradle:gradle-publish:0.4.3'
+        classpath 'com.avast.gradle:gradle-release:0.4.3'
+        classpath 'com.avast.gradle:gradle-scala:0.4.3'
+        classpath 'com.avast.gradle:gradle-protobuf:0.4.3'
     }
 }
 
 apply plugin: 'avast-release'
-apply plugin: 'avast-scala'
 
 allprojects {
     apply plugin: 'java'
     apply plugin: 'avast-publish'
 
-    avast {
-        publish {
-            groupId = 'com.avast'
-        }
-
-        scala {
-            version = "2.11"
-            versionCatalog = ["2.11": "2.11.7"]
-        }
+    repositories {
+        maven { url 'http://integration.ff.int.avast.com:9999/artifactory/libs-release' }
     }
 
     sourceCompatibility = '1.8'
     targetCompatibility = '1.8'
 
-    //noinspection GroovyAssignabilityCheck
-    tasks.withType(ScalaCompile) {
-        //noinspection GroovyAccessibility
-        scalaCompileOptions.additionalParameters = ["-Xlint", "-Ywarn-value-discard"]
+    avast {
+        publish {
+            groupId = 'com.avast.kluzo'
+        }
     }
+}
 
-    repositories {
-        maven { url 'http://integration.ff.int.avast.com:9999/artifactory/libs-release' }
-        maven { url 'http://integration.ff.int.avast.com:9999/artifactory/libs-snapshot' }
+subprojects {
+    if (it.hasProperty('scala')) {
+        apply plugin: 'avast-scala'
+
+        avast {
+            scala {
+                version = '2.11'
+                versionCatalog = ['2.11': '2.11.7']
+            }
+        }
+
+        // noinspection GroovyAssignabilityCheck
+        tasks.withType(ScalaCompile) {
+            // noinspection GroovyAccessibility
+            scalaCompileOptions.additionalParameters = ['-Xlint', '-Ywarn-value-discard']
+        }
     }
 }
 
