@@ -8,42 +8,43 @@ buildscript {
         classpath 'com.avast.gradle:gradle-release:0.4.2'
         classpath 'com.avast.gradle:gradle-scala:0.4.2'
         classpath 'com.avast.gradle:gradle-protobuf:0.4.2'
-        classpath 'com.netflix.nebula:gradle-extra-configurations-plugin:2.2.+'
+        classpath 'com.google.protobuf:protobuf-gradle-plugin:0.7.0'
+        classpath 'com.github.ben-manes:gradle-versions-plugin:0.11.1'
     }
 }
 
-apply plugin: 'java'
-apply plugin: 'avast-release'
-apply plugin: 'avast-publish'
-apply plugin: 'avast-scala'
 
+allprojects {
+    apply plugin: 'java'
+    apply plugin: 'avast-scala'
+    apply plugin: 'avast-release'
+    apply plugin: 'avast-publish'
 
-repositories {
-    maven { url 'http://integration.ff.int.avast.com:9999/artifactory/libs-release' }
-    maven { url 'http://integration.ff.int.avast.com:9999/artifactory/libs-snapshot' }
+    avast {
+        publish {
+            groupId = 'com.avast.logger'
+        }
+
+        scala {
+            version = "2.11"
+            versionCatalog = ["2.11": "2.11.7"]
+        }
+    }
+
+    //noinspection GroovyAssignabilityCheck
+    tasks.withType(ScalaCompile) {
+        //noinspection GroovyAccessibility
+        scalaCompileOptions.additionalParameters = ["-Xlint", "-Ywarn-value-discard"]
+    }
+
+    repositories {
+        maven { url 'http://integration.ff.int.avast.com:9999/artifactory/libs-release' }
+        maven { url 'http://integration.ff.int.avast.com:9999/artifactory/libs-snapshot' }
+    }
 }
 
 avast {
     publish {
-        groupId = 'com.avast'
-        artifactId = 'tracking-logger'
-    }
-
-    scala {
-        version = "2.11"
-        versionCatalog = ["2.11": "2.11.7"]
+        artifactId = 'tracking-logger-parent'
     }
 }
-
-tasks.withType(ScalaCompile) {
-    //noinspection GroovyAccessibility
-    scalaCompileOptions.additionalParameters = ["-Xlint", "-Ywarn-value-discard"]
-}
-
-dependencies {
-    compile 'org.slf4j:slf4j-api:1.7.12'
-
-    //TODO version
-    compile 'org.scala-lang:scala-reflect:2.11.7'
-}
-

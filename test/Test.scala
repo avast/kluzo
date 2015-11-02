@@ -1,4 +1,5 @@
-import com.avast.logger.{RequestId, TrackingLoggerFactory}
+import com.avast.logger.slf4j.TrackingLoggerFactory
+import com.avast.logger.RequestId
 
 
 implicit val id = RequestId("jenda")

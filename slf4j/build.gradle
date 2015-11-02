@@ -1,0 +1,15 @@
+avast {
+    publish {
+        artifactId = 'tracking-logger-slf4j'
+    }
+}
+
+dependencies {
+    compile project(":api")
+
+    compile 'org.slf4j:slf4j-api:1.7.12'
+
+    //TODO version
+    compile "org.scala-lang:scala-reflect:2.11.7"
+}
+

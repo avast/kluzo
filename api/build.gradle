@@ -1,0 +1,5 @@
+avast {
+    publish {
+        artifactId = 'tracking-logger-api'
+    }
+}
