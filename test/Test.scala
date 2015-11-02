@@ -1,10 +1,9 @@
-import com.avast.logger.slf4j.TrackingLoggerFactory
-import com.avast.logger.RequestId
+import com.avast.kluzo.TraceId
+import com.avast.kluzo.logger._
 
+implicit val id = TraceId.create("jenda")
 
-implicit val id = RequestId("jenda")
-
-val logger = TrackingLoggerFactory.getLogger(getClass)
+val logger = TracingLoggerFactory.getLogger(getClass)
 
 for (i <- 1 to 3) {
   logger.info(s"Hello $i")

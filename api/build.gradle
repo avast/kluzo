@@ -1,5 +1,5 @@
 avast {
     publish {
-        artifactId = 'tracking-logger-api'
+        artifactId = 'kluzo-api'
     }
 }

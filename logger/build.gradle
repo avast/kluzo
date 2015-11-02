@@ -1,8 +1,10 @@
 avast {
     publish {
-        artifactId = 'tracking-logger-slf4j'
+        artifactId = 'kluzo-logger'
     }
 }
+
+apply plugin: 'avast-scala'
 
 dependencies {
     compile project(":api")

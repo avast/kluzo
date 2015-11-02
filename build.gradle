@@ -16,13 +16,12 @@ buildscript {
 
 allprojects {
     apply plugin: 'java'
-    apply plugin: 'avast-scala'
     apply plugin: 'avast-release'
     apply plugin: 'avast-publish'
 
     avast {
         publish {
-            groupId = 'com.avast.logger'
+            groupId = 'com.avast'
         }
 
         scala {
@@ -30,6 +29,9 @@ allprojects {
             versionCatalog = ["2.11": "2.11.7"]
         }
     }
+
+    sourceCompatibility = '1.8'
+    targetCompatibility = '1.8'
 
     //noinspection GroovyAssignabilityCheck
     tasks.withType(ScalaCompile) {
@@ -45,6 +47,6 @@ allprojects {
 
 avast {
     publish {
-        artifactId = 'tracking-logger-parent'
+        artifactId = 'kluzo-parent'
     }
 }
