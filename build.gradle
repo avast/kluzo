@@ -13,10 +13,11 @@ buildscript {
     }
 }
 
+apply plugin: 'avast-release'
+apply plugin: 'avast-scala'
 
 allprojects {
     apply plugin: 'java'
-    apply plugin: 'avast-release'
     apply plugin: 'avast-publish'
 
     avast {
