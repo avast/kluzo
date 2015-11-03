@@ -7,7 +7,7 @@ import scala.reflect.macros.blackbox
 
 private[logger] object KluzoLoggerMacros {
 
-  type LoggerContext = blackbox.Context {type PrefixType = Logger}
+  type LoggerContext = blackbox.Context {type PrefixType = KluzoLogger}
 
   def traceMessage(c: LoggerContext)(message: c.Expr[String])(traceId: c.Expr[TraceId]) = {
     import c.universe._
