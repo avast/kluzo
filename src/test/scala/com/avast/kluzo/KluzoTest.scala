@@ -20,7 +20,7 @@ class KluzoTest extends FunSuite {
   private def testTraceId(pool: Executor) {
     val wrappedPool = Kluzo.wrapExecutor(pool)
 
-    val traceId1 = generateTraceId
+    val traceId1 = TraceId.generate
     traceId.set(traceId1)
     MDC.put(MdcKey, traceId1.value)
     wrappedPool.execute(new Runnable {
@@ -30,7 +30,7 @@ class KluzoTest extends FunSuite {
       }
     })
 
-    val traceId2 = generateTraceId
+    val traceId2 = TraceId.generate
     traceId.set(traceId2)
     // this will probably be visible in log because MDC is usin InheritableThreadLocal
     // and the threads are created in this test so they inherit the value
@@ -42,7 +42,7 @@ class KluzoTest extends FunSuite {
       }
     })
 
-    val traceId3 = generateTraceId
+    val traceId3 = TraceId.generate
     traceId.set(traceId3)
     MDC.put(MdcKey, traceId3.value)
     wrappedPool.execute(new Runnable {
