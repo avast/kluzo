@@ -13,7 +13,7 @@ object TraceId {
   private val numberOfAllowedChars = AllowedChars.length
 
   /** This array is just used to map over it to get an array of random characters of the same length. */
-  private val helperArray = new Array[Unit](numberOfAllowedChars)
+  private val helperArray = new Array[Unit](Length)
 
   /** Generates a new [[com.avast.kluzo.TraceId]] that consists of characters from [[com.avast.kluzo.TraceId.AllowedChars]]
     * and is [[com.avast.kluzo.TraceId.Length]] long.
