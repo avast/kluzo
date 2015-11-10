@@ -1,8 +1,8 @@
-package com.avast
+package com.avast.kluzo
 
 import com.avast.continuity.Continuity
 
-package object kluzo {
+object Kluzo {
 
   final val ContinuityKey = "traceId"
 
