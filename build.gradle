@@ -41,7 +41,7 @@ tasks.withType(ScalaCompile) {
 
 dependencies {
     compile 'org.slf4j:slf4j-api:1.7.12'
-    compile 'com.avast.continuity:continuity-core_?:1.0.1'
+    compile 'com.avast.continuity:continuity-core_?:1.0.2'
     testCompile 'org.scalatest:scalatest_?:2.2.5'
     testCompile 'ch.qos.logback:logback-classic:1.1.3'
 }
