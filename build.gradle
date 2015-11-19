@@ -17,7 +17,6 @@ apply plugin: 'avast-publish'
 
 repositories {
     maven { url 'http://integration.ff.int.avast.com:9999/artifactory/libs-release' }
-    maven { url 'http://integration.ff.int.avast.com:9999/artifactory/libs-snapshot' }
 }
 
 sourceCompatibility = '1.8'
@@ -42,7 +41,7 @@ tasks.withType(ScalaCompile) {
 
 dependencies {
     compile 'org.slf4j:slf4j-api:1.7.12'
-    compile 'com.avast:continuity_?:1.0-SNAPSHOT'
+    compile 'com.avast:continuity_?:1.0.1'
     testCompile 'org.scalatest:scalatest_?:2.2.5'
     testCompile 'ch.qos.logback:logback-classic:1.1.3'
 }
