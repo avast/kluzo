@@ -16,6 +16,7 @@ apply plugin: 'avast-scala'
 apply plugin: 'avast-publish'
 
 repositories {
+    mavenLocal()
     maven { url 'http://integration.ff.int.avast.com:9999/artifactory/libs-release' }
 }
 
@@ -33,15 +34,14 @@ avast {
     }
 }
 
-// noinspection GroovyAssignabilityCheck
 tasks.withType(ScalaCompile) {
-    // noinspection GroovyAccessibility
     scalaCompileOptions.additionalParameters = ['-Xlint', '-Ywarn-value-discard']
 }
 
 dependencies {
     compile 'org.slf4j:slf4j-api:1.7.13'
-    compile 'com.avast.continuity:continuity-core_?:1.0.3'
+    compile 'com.avast.continuity:continuity-core_?:1.0-SNAPSHOT'
     testCompile 'org.scalatest:scalatest_?:2.2.5'
+    testCompile 'junit:junit:4.12'
     testCompile 'ch.qos.logback:logback-classic:1.1.3'
 }

@@ -20,33 +20,37 @@ class KluzoTest extends FunSuite {
   }
 
   private def testTraceId(pool: Executor) {
-    val wrappedPool = Continuity.wrapExecutor(pool, ContinuityContextThreadNamer.prefix(ContinuityKey))
+    implicit val threadNamer = ContinuityContextThreadNamer.prefix(ContinuityKey)
+    val wrappedPool = Continuity.wrapExecutor(pool)
 
     val traceId1 = TraceId.generate
-    setTraceId(traceId1)
-    wrappedPool.execute(new Runnable {
-      override def run(): Unit = {
-        assert(getTraceId === Some(traceId1))
-        logger.info("first")
-      }
-    })
+    Kluzo.withTraceId(traceId1) {
+      wrappedPool.execute(new Runnable {
+        override def run(): Unit = {
+          assert(getTraceId === Some(traceId1))
+          logger.info("first")
+        }
+      })
+    }
 
     val traceId2 = TraceId.generate
-    setTraceId(traceId2)
-    pool.execute(new Runnable {
-      override def run(): Unit = {
-        assert(getTraceId === None)
-        logger.info("second")
-      }
-    })
+    Kluzo.withTraceId(traceId2) {
+      pool.execute(new Runnable {
+        override def run(): Unit = {
+          assert(getTraceId === None)
+          logger.info("second")
+        }
+      })
+    }
 
     val traceId3 = TraceId.generate
-    setTraceId(traceId3)
-    wrappedPool.execute(new Runnable {
-      override def run(): Unit = {
-        assert(getTraceId === Some(traceId3))
-        logger.info("third")
-      }
-    })
+    Kluzo.withTraceId(traceId3) {
+      wrappedPool.execute(new Runnable {
+        override def run(): Unit = {
+          assert(getTraceId === Some(traceId3))
+          logger.info("third")
+        }
+      })
+    }
   }
 }
