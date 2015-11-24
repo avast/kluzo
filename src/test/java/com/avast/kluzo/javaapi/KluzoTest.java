@@ -1,7 +1,5 @@
 package com.avast.kluzo.javaapi;
 
-import com.avast.continuity.ContinuityContextThreadNamer;
-import com.avast.continuity.ThreadNamer;
 import com.avast.continuity.javaapi.Continuity;
 import org.junit.Test;
 import org.slf4j.Logger;
@@ -20,9 +18,8 @@ public class KluzoTest {
 
     @Test
     public void testTraceId() throws InterruptedException {
-        ThreadNamer threadNamer = ContinuityContextThreadNamer.prefix("traceId");
         ExecutorService executor = Executors.newCachedThreadPool();
-        ExecutorService wrappedExecutor = Continuity.wrapExecutorService(executor, threadNamer);
+        ExecutorService wrappedExecutor = Continuity.wrapExecutorService(executor, Kluzo.THREAD_NAMER);
 
         CountDownLatch latch = new CountDownLatch(3);
 

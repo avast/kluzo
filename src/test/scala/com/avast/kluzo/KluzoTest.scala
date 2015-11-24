@@ -2,7 +2,7 @@ package com.avast.kluzo
 
 import java.util.concurrent.{Executor, Executors}
 
-import com.avast.continuity.{Continuity, ContinuityContextThreadNamer}
+import com.avast.continuity.Continuity
 import com.avast.kluzo.Kluzo._
 import org.scalatest.FunSuite
 import org.slf4j.LoggerFactory
@@ -20,8 +20,7 @@ class KluzoTest extends FunSuite {
   }
 
   private def testTraceId(pool: Executor) {
-    implicit val threadNamer = ContinuityContextThreadNamer.prefix(ContinuityKey)
-    val wrappedPool = Continuity.wrapExecutor(pool)
+    val wrappedPool = Continuity.wrapExecutor(pool)(Kluzo.ThreadNamer)
 
     val traceId1 = TraceId.generate
     Kluzo.withTraceId(traceId1) {
