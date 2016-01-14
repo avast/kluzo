@@ -49,6 +49,24 @@ public final class Kluzo {
         });
     }
 
+    /**
+     * Puts the {@link TraceId} into the context, names a thread and runs the given block of code
+     * if traceId exists. It correctly cleans up everything after the block finishes.
+     *
+     * @see com.avast.continuity.javaapi.Continuity#withContext(Callable)
+     */
+    public static <T> T withTraceId(Optional<TraceId> traceId, final Callable<T> block) throws RuntimeException {
+        if (traceId.isPresent()) {
+            return withTraceId(traceId.get(), block);
+        } else {
+            try {
+                return block.call();
+            } catch (Exception ex) {
+                throw new RuntimeException(ex);
+            }
+        }
+    }
+
     public static Optional<TraceId> getTraceId() {
         return Continuity.getFromContext(CONTINUITY_KEY).map(TraceId::new);
     }
