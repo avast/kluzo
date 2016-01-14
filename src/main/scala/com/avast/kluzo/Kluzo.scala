@@ -27,6 +27,17 @@ object Kluzo {
     }
   }
 
+  /** Puts the [[com.avast.kluzo.TraceId]] into the context, names a thread and runs the given block of code
+    * if traceId exists. It correctly cleans up everything after the block finishes.
+    *
+    * @see [[com.avast.continuity.Continuity#withContext]]
+    */
+  def withTraceId[A](traceId: Option[TraceId])
+                    (block: => A): A = traceId match {
+    case Some(tid) => withTraceId(tid)(block)
+    case None => block
+  }
+
   def getTraceId: Option[TraceId] = Continuity.getFromContext(ContinuityKey).map(TraceId.apply)
 
   def setTraceId(traceId: TraceId): Unit = Continuity.putToContext(ContinuityKey, traceId.value)
