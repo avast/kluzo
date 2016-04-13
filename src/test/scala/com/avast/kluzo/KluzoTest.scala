@@ -52,4 +52,32 @@ class KluzoTest extends FunSuite {
       })
     }
   }
+
+  ignore("performance") {
+    val tid = TraceId("test")
+    val count = 100000
+    var totalTime = 0L
+    var workTime = 0L
+    for (i <- 0 until count) {
+      val start = System.nanoTime
+      Kluzo.withTraceId(tid) {
+        val start1 = System.nanoTime
+        var sum = 0L
+        for (j <- i until 100000) {
+          if (j % 2 == 0) {
+            sum += j
+          } else {
+            sum *= j
+          }
+        }
+        workTime += System.nanoTime - start1
+      }
+      totalTime += System.nanoTime - start
+    }
+
+    println(s"workTime: $workTime, average: ${ workTime.toDouble / count }")
+    println(s"totalTime: $totalTime, average: ${ totalTime.toDouble / count }")
+    println(s"overhead: ${ totalTime - workTime }, average: ${ (totalTime - workTime).toDouble / count }")
+  }
+
 }
