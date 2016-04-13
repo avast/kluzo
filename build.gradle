@@ -4,44 +4,47 @@ buildscript {
     }
 
     dependencies {
-        classpath 'com.avast.gradle:gradle-publish:0.5.5'
-        classpath 'com.avast.gradle:gradle-release:0.5.5'
-        classpath 'com.avast.gradle:gradle-scala:0.5.5'
-        classpath 'com.avast.gradle:gradle-protobuf:0.5.5'
+        classpath 'com.avast.gradle:gradle-publish:0.8.4'
+        classpath 'com.avast.gradle:gradle-release:0.8.4'
+        classpath 'com.avast.gradle:gradle-scala:0.8.4'
+        classpath 'com.avast.gradle:gradle-protobuf:0.8.4'
+        classpath 'com.github.maiflai:gradle-scalatest:0.11'
     }
 }
 
 apply plugin: 'avast-release'
-apply plugin: 'avast-scala'
-apply plugin: 'avast-publish'
 
-repositories {
-    maven { url 'http://integration.ff.int.avast.com:9999/artifactory/libs-release' }
+allprojects {
+    apply plugin: 'java'
+    apply plugin: 'avast-publish'
+    apply plugin: 'idea'
+
+    repositories {
+        maven { url 'http://integration.ff.int.avast.com:9999/artifactory/libs-release' }
+    }
+
+    avast {
+        publish {
+            groupId = 'com.avast'
+        }
+    }
+
+    sourceCompatibility = '1.8'
+    targetCompatibility = '1.8'
+
+    if (project.hasProperty('scala')) {
+        apply plugin: 'avast-scala'
+
+        avast {
+            scala {
+                version = '2.11'
+            }
+        }
+    }
 }
-
-sourceCompatibility = '1.8'
-targetCompatibility = '1.8'
 
 avast {
     publish {
-        groupId = 'com.avast'
-        artifactId = 'kluzo'
+        artifactId = 'kluzo-parent'
     }
-    scala {
-        version = '2.11'
-        versionCatalog = ['2.11': '2.11.7']
-    }
-}
-
-tasks.withType(ScalaCompile) {
-    scalaCompileOptions.additionalParameters = ['-Xlint', '-feature', '-Ywarn-value-discard']
-    scalaCompileOptions.useAnt = false
-}
-
-dependencies {
-    compile 'org.slf4j:slf4j-api:1.7.13'
-    compile 'com.avast.continuity:continuity-core_?:1.0.5'
-    testCompile 'org.scalatest:scalatest_?:2.2.5'
-    testCompile 'junit:junit:4.12'
-    testCompile 'ch.qos.logback:logback-classic:1.1.3'
 }
