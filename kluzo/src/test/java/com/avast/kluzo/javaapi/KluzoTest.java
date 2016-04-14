@@ -1,5 +1,6 @@
 package com.avast.kluzo.javaapi;
 
+import com.avast.continuity.ContinuityContextThreadNamer;
 import com.avast.continuity.javaapi.Continuity;
 import org.junit.Test;
 import org.slf4j.Logger;
@@ -10,6 +11,7 @@ import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
+import static com.avast.kluzo.javaapi.Kluzo.CONTINUITY_KEY;
 import static org.junit.Assert.assertEquals;
 
 public class KluzoTest {
@@ -19,12 +21,12 @@ public class KluzoTest {
     @Test
     public void testTraceId() throws InterruptedException {
         ExecutorService executor = Executors.newCachedThreadPool();
-        ExecutorService wrappedExecutor = Continuity.wrapExecutorService(executor, Kluzo.THREAD_NAMER);
+        ExecutorService wrappedExecutor = Continuity.wrapExecutorService(executor, ContinuityContextThreadNamer.prefix(CONTINUITY_KEY));
 
         CountDownLatch latch = new CountDownLatch(3);
 
         TraceId traceId1 = TraceId.generate();
-        Kluzo.withTraceId(traceId1, () -> {
+        Kluzo.withTraceId(Optional.of(traceId1), () -> {
             wrappedExecutor.execute(() -> {
                 assertEquals(Kluzo.getTraceId(), Optional.of(traceId1));
                 logger.info("first");
@@ -34,7 +36,7 @@ public class KluzoTest {
         });
 
         TraceId traceId2 = TraceId.generate();
-        Kluzo.withTraceId(traceId2, () -> {
+        Kluzo.withTraceId(Optional.of(traceId2), () -> {
             executor.execute(() -> {
                 assertEquals(Kluzo.getTraceId(), Optional.empty());
                 logger.info("second");
@@ -44,7 +46,7 @@ public class KluzoTest {
         });
 
         TraceId traceId3 = TraceId.generate();
-        Kluzo.withTraceId(traceId3, () -> {
+        Kluzo.withTraceId(Optional.of(traceId3), () -> {
             wrappedExecutor.execute(() -> {
                 assertEquals(Kluzo.getTraceId(), Optional.of(traceId3));
                 logger.info("third");

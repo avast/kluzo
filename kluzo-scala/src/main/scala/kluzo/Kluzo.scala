@@ -1,6 +1,6 @@
 package com.avast.kluzo
 
-import com.avast.continuity.{Continuity, ContinuityContextThreadNamer, ThreadNamer}
+import com.avast.continuity.{Continuity, IdentityThreadNamer, ThreadNamer}
 
 /* KEEP THIS IMPLEMENTATION IN SYNC WITH THE JAVA API VERSION */
 
@@ -12,29 +12,15 @@ object Kluzo {
   /** HTTP header name that is used to transfer Kluzo trace ID over HTTP. */
   final val HttpHeaderName = "Avast-Kluzo-TraceId"
 
-  /** Default [[com.avast.continuity.ThreadNamer]] that puts Kluzo trace ID into thread name. */
-  implicit final val ThreadNamer: ThreadNamer = ContinuityContextThreadNamer.prefix(ContinuityKey)
-
-  /** Puts the [[com.avast.kluzo.TraceId]] into the context, names a thread and runs the given block of code.
-    * It correctly cleans up everything after the block finishes.
-    *
-    * @see [[com.avast.continuity.Continuity#withContext]]
-    */
-  def withTraceId[A](traceId: TraceId)
-                    (block: => A): A = {
-    Continuity.withContext(ContinuityKey -> traceId.value) {
-      block
-    }
-  }
-
   /** Puts the [[com.avast.kluzo.TraceId]] into the context, names a thread and runs the given block of code
     * if traceId exists. It correctly cleans up everything after the block finishes.
     *
     * @see [[com.avast.continuity.Continuity#withContext]]
     */
   def withTraceId[A](traceId: Option[TraceId])
-                    (block: => A): A = traceId match {
-    case Some(tid) => withTraceId(tid)(block)
+                    (block: => A)
+                    (implicit threadNamer: ThreadNamer = IdentityThreadNamer): A = traceId match {
+    case Some(tid) => Continuity.withContext(ContinuityKey -> tid.value)(block)
     case None => block
   }
 

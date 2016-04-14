@@ -2,7 +2,7 @@ package com.avast.kluzo
 
 import java.util.concurrent.{Executor, Executors}
 
-import com.avast.continuity.Continuity
+import com.avast.continuity.{Continuity, ContinuityContextThreadNamer}
 import com.avast.kluzo.Kluzo._
 import org.scalatest.FunSuite
 import org.slf4j.LoggerFactory
@@ -19,11 +19,11 @@ class KluzoTest extends FunSuite {
     testTraceId(ExecutionContext.global)
   }
 
-  private def testTraceId(pool: Executor) {
-    val wrappedPool = Continuity.wrapExecutor(pool)(Kluzo.ThreadNamer)
+  private def testTraceId(pool: Executor): Unit = {
+    val wrappedPool = Continuity.wrapExecutor(pool)(ContinuityContextThreadNamer.prefix(ContinuityKey))
 
     val traceId1 = TraceId.generate
-    Kluzo.withTraceId(traceId1) {
+    Kluzo.withTraceId(Some(traceId1)) {
       wrappedPool.execute(new Runnable {
         override def run(): Unit = {
           assert(getTraceId === Some(traceId1))
@@ -33,7 +33,7 @@ class KluzoTest extends FunSuite {
     }
 
     val traceId2 = TraceId.generate
-    Kluzo.withTraceId(traceId2) {
+    Kluzo.withTraceId(Some(traceId2)) {
       pool.execute(new Runnable {
         override def run(): Unit = {
           assert(getTraceId === None)
@@ -43,7 +43,7 @@ class KluzoTest extends FunSuite {
     }
 
     val traceId3 = TraceId.generate
-    Kluzo.withTraceId(traceId3) {
+    Kluzo.withTraceId(Some(traceId3)) {
       wrappedPool.execute(new Runnable {
         override def run(): Unit = {
           assert(getTraceId === Some(traceId3))
@@ -54,13 +54,14 @@ class KluzoTest extends FunSuite {
   }
 
   ignore("performance") {
+    // implicit val tn = ContinuityContextThreadNamer.prefix(ContinuityKey)
     val tid = TraceId("test")
     val count = 100000
     var totalTime = 0L
     var workTime = 0L
     for (i <- 0 until count) {
       val start = System.nanoTime
-      Kluzo.withTraceId(tid) {
+      Kluzo.withTraceId(Some(tid)) {
         val start1 = System.nanoTime
         var sum = 0L
         for (j <- i until 100000) {
