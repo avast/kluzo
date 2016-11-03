@@ -6,14 +6,13 @@ avast {
     }
 }
 
-test {
-    // maxParallelForks = 1
+tasks.withType(Test) {
     reports.html.enabled = false
 }
 
 dependencies {
     compile 'org.slf4j:slf4j-api:1.7.21'
-    compile 'com.avast.continuity:continuity-core_?:1.4.15'
+    compile 'com.avast.continuity:continuity-core_?:1.4.18'
     testCompile 'org.scalatest:scalatest_?:3.0.0'
     testCompile 'ch.qos.logback:logback-classic:1.1.7'
 }

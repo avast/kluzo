@@ -1,3 +1,5 @@
+evaluationDependsOn(":kluzo-scala") // necessary for cross-compilation
+
 avast {
     publish {
         artifactId = 'kluzo'
