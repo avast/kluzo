@@ -2,12 +2,12 @@ evaluationDependsOn(":kluzo-scala") // necessary for cross-compilation
 
 avast {
     publish {
-        artifactId = 'kluzo'
+        artifactId = "kluzo"
     }
 }
 
 dependencies {
-    compile project(':kluzo-scala')
-    testCompile 'junit:junit:4.12'
-    testCompile 'ch.qos.logback:logback-classic:1.1.7'
+    compile project(":kluzo-scala")
+    testCompile "junit:junit:4.12"
+    testCompile "ch.qos.logback:logback-classic:1.1.8"
 }

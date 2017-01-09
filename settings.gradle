@@ -1,2 +1,4 @@
-include 'kluzo'
-include 'kluzo-scala'
+rootProject.name = "kluzo"
+
+include "kluzo"
+include "kluzo-scala"
