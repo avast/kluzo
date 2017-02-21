@@ -76,9 +76,9 @@ class KluzoTest extends FunSuite {
       totalTime += System.nanoTime - start
     }
 
-    println(s"workTime: $workTime, average: ${ workTime.toDouble / count }")
-    println(s"totalTime: $totalTime, average: ${ totalTime.toDouble / count }")
-    println(s"overhead: ${ totalTime - workTime }, average: ${ (totalTime - workTime).toDouble / count }")
+    println(s"workTime: $workTime, average: ${workTime.toDouble / count}")
+    println(s"totalTime: $totalTime, average: ${totalTime.toDouble / count}")
+    println(s"overhead: ${totalTime - workTime}, average: ${(totalTime - workTime).toDouble / count}")
   }
 
 }

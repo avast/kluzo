@@ -17,9 +17,7 @@ object Kluzo {
     *
     * @see [[com.avast.continuity.Continuity#withContext]]
     */
-  def withTraceId[A](traceId: Option[TraceId])
-                    (block: => A)
-                    (implicit threadNamer: ThreadNamer = IdentityThreadNamer): A = traceId match {
+  def withTraceId[A](traceId: Option[TraceId])(block: => A)(implicit threadNamer: ThreadNamer = IdentityThreadNamer): A = traceId match {
     case Some(tid) => Continuity.withContext(ContinuityKey -> tid.value)(block)
     case None => block
   }

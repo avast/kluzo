@@ -11,8 +11,8 @@ tasks.withType(Test) {
 }
 
 dependencies {
-    compile "org.slf4j:slf4j-api:1.7.22"
-    compile "com.avast.continuity:continuity-core_?:2.0.19"
+    compile "org.slf4j:slf4j-api:1.7.23"
+    compile "com.avast.continuity:continuity-core_?:2.0.20"
     testCompile "org.scalatest:scalatest_?:3.0.1"
-    testCompile "ch.qos.logback:logback-classic:1.1.8"
+    testCompile "ch.qos.logback:logback-classic:1.1.10"
 }
