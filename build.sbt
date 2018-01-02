@@ -1,6 +1,3 @@
-
-
-
 lazy val scalaSettings = Seq(
   scalaVersion := "2.11.8",
   scalacOptions += "-deprecation",
@@ -34,8 +31,6 @@ lazy val commonSettings = Seq(
   bintrayOrganization := Some("avast"),
   bintrayPackage := "kluzo",
 
-  // TODO remove
-  resolvers += "Avast artifactory" at "https://artifactory.int.avast.com/artifactory/maven",
   pomExtra := (
     <scm>
       <url>git@github.com:avast/kluzo.git</url>
@@ -74,7 +69,7 @@ lazy val coreScala = (project in file("kluzo-scala")).
     // TODO remove
     libraryDependencies ++= Seq(
       "org.slf4j" % "slf4j-api" % Versions.slf4j,
-      "com.avast.continuity" %% "continuity-core" % "2.0.20"
+      "com.avast.continuity" %% "continuity-core" % "3.0.0-beta"
     )
   )
 
