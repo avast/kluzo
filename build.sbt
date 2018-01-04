@@ -44,6 +44,7 @@ lazy val commonSettings = Seq(
         </developer>
       </developers>
     ),
+  resolvers += Resolver.jcenterRepo,
   libraryDependencies ++= Seq(
     "junit" % "junit" % "4.12" % "test",
     "org.scalatest" %% "scalatest" % "3.0.1" % "test",
@@ -66,7 +67,6 @@ lazy val coreScala = (project in file("kluzo-scala")).
     scalaSettings,
     name := "kluzo-scala",
 
-    // TODO remove
     libraryDependencies ++= Seq(
       "org.slf4j" % "slf4j-api" % Versions.slf4j,
       "com.avast.continuity" %% "continuity-core" % "3.0.0-beta2"
