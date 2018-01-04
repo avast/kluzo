@@ -69,7 +69,7 @@ lazy val coreScala = (project in file("kluzo-scala")).
 
     libraryDependencies ++= Seq(
       "org.slf4j" % "slf4j-api" % Versions.slf4j,
-      "com.avast.continuity" %% "continuity-core" % "3.0.0-beta2"
+      "com.avast.continuity" %% "continuity-core" % "3.0.0"
     )
   )
 
