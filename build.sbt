@@ -1,9 +1,10 @@
 lazy val Versions = new {
-  val slf4j = "1.7.25"
+  val slf4j = "1.7.28"
 }
 
 lazy val scalaSettings = Seq(
-  scalaVersion := "2.12.4",
+  scalaVersion := "2.12.10",
+  crossScalaVersions := List(scalaVersion.value, "2.13.1"),
   scalacOptions += "-deprecation",
   scalacOptions += "-unchecked",
   scalacOptions += "-feature"
@@ -40,8 +41,8 @@ lazy val commonSettings = Seq(
   resolvers += Resolver.jcenterRepo,
   libraryDependencies ++= Seq(
     "junit" % "junit" % "4.12" % "test",
-    "org.scalatest" %% "scalatest" % "3.0.4" % "test",
-    "com.novocode" % "junit-interface" % "0.10" % "test", // Required by sbt to execute JUnit tests
+    "org.scalatest" %% "scalatest" % "3.0.8" % "test",
+    "com.novocode" % "junit-interface" % "0.11" % "test", // Required by sbt to execute JUnit tests
     "ch.qos.logback" % "logback-classic" % "1.2.3" % "test"
   ),
   testOptions += Tests.Argument(TestFrameworks.JUnit)
@@ -61,7 +62,7 @@ lazy val coreScala = (project in file("kluzo-scala")).settings(
   name := "kluzo-scala",
   libraryDependencies ++= Seq(
     "org.slf4j" % "slf4j-api" % Versions.slf4j,
-    "com.avast.continuity" %% "continuity-core" % "3.0.1"
+    "com.avast.continuity" %% "continuity-core" % "4.0.1"
   )
 )
 
